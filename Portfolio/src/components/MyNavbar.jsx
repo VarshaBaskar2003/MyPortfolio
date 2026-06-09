@@ -6,16 +6,22 @@ export default function MyNavbar() {
 
   const navLinks = ["Home", "About", "Projects", "Contact"];
 
+  const scrollTo = (id) => {
+  const el = document.getElementById(id);
+  if (el) {
+    const extraOffset = id === "about" ? 0 : 0; // tweak per section if needed
+    const top = el.getBoundingClientRect().top + window.scrollY - 64 - extraOffset;
+    window.scrollTo({ top, behavior: "smooth" });
+  }
+};
   const handleHireMe = (e) => {
     e.preventDefault();
     setMenuOpen(false);
     setActiveLink("Contact");
-    const el = document.getElementById("contact");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    scrollTo("contact");
   };
 
-
-  const handleNavClick = (e, link) => {
+ const handleNavClick = (e, link) => {
   e.preventDefault();
   setActiveLink(link);
   setMenuOpen(false);
@@ -25,27 +31,32 @@ export default function MyNavbar() {
     return;
   }
 
-  const sectionId = link.toLowerCase();
-  const el = document.getElementById(sectionId);
-  if (el) {
-    el.scrollIntoView({ behavior: "smooth" });
-  }
+  scrollTo(link.toLowerCase());  // ✅ About now scrolls to #about which is 64px down
 };
+
   return (
     <>
       {/* Google Fonts */}
       <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Mono:wght@300;400&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Poppins:wght@300;400;500;600&display=swap"
         rel="stylesheet"
       />
 
-      {/* Bootstrap CDN (better to move to index.html or main.jsx in real apps) */}
+      {/* Bootstrap */}
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
       />
 
       <style>{`
+        html {
+          scroll-behavior: smooth;
+        }
+
+        #home, #about, #projects, #contact {
+          scroll-margin-top: 64px;
+        }
+
         .nav-brand {
           font-family: 'Playfair Display', serif;
           font-size: 1.2rem;
@@ -64,12 +75,12 @@ export default function MyNavbar() {
         .nav-dot {
           width: 8px;
           height: 8px;
-          background: #d87030ff;
+          background: #d86e30ff;
           border-radius: 50%;
         }
 
         .nav-item-link {
-          font-family: 'DM Mono', monospace;
+          font-family: 'Poppins', sans-serif;
           font-size: 12px;
           text-transform: lowercase;
           color: #6c757d !important;
@@ -78,23 +89,24 @@ export default function MyNavbar() {
         }
 
         .nav-item-link:hover {
-          color: #1a1a1aff !important;
+          color: #1a1a1a !important;
           background: #f5f5f3;
         }
 
         .nav-item-link.active {
-          color: #3073d8ff !important;
+          color: #3038d8ff !important;
           background: #FAECE7;
         }
 
         .nav-cta {
-          font-family: 'DM Mono', monospace;
+          font-family: 'Poppins', sans-serif;
           font-size: 12px;
           background: #1a1a1a;
           color: #fff;
           border: none;
           padding: 8px 20px;
           border-radius: 100px;
+          cursor: pointer;
         }
 
         .nav-cta:hover {
@@ -103,6 +115,9 @@ export default function MyNavbar() {
 
         .portfolio-navbar {
           border-bottom: 1px solid rgba(0,0,0,0.08);
+          position: sticky;
+          top: 0;
+          z-index: 999;
         }
 
         .navbar-toggler {
@@ -127,13 +142,24 @@ export default function MyNavbar() {
           margin-left: auto;
         }
 
+        .mobile-menu {
+          background: #fff;
+          border-bottom: 1px solid rgba(0,0,0,0.08);
+          padding: 8px 16px 16px;
+          position: sticky;
+          top: 64px;
+          z-index: 998;
+        }
+
         .mobile-nav-link {
-          font-family: 'DM Mono', monospace;
+          font-family: 'Poppins', sans-serif;
           font-size: 13px;
           color: #6c757d !important;
           display: block;
-          padding: 10px;
+          padding: 10px 12px;
           border-radius: 8px;
+          text-decoration: none;
+          transition: all 0.15s;
         }
 
         .mobile-nav-link:hover {
@@ -142,7 +168,7 @@ export default function MyNavbar() {
         }
 
         .mobile-nav-link.active {
-          color: #3036d8ff !important;
+          color: #3054d8ff !important;
           background: #FAECE7;
         }
 
@@ -155,12 +181,17 @@ export default function MyNavbar() {
           border-radius: 100px;
           margin-top: 10px;
           text-decoration: none;
+          font-family: 'Poppins', sans-serif;
+          font-size: 13px;
+          transition: opacity 0.15s;
         }
-        html {
-          scroll-behavior: smooth;
-}
+
+        .mobile-cta:hover {
+          opacity: 0.8;
+        }
       `}</style>
 
+      {/* Navbar */}
       <nav
         className="navbar navbar-expand-sm bg-white portfolio-navbar px-3"
         style={{ height: "64px" }}
@@ -175,6 +206,7 @@ export default function MyNavbar() {
           <button
             className="navbar-toggler"
             onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle navigation"
           >
             <span className="hamburger-line"></span>
             <span className="hamburger-line"></span>
@@ -198,38 +230,29 @@ export default function MyNavbar() {
             </ul>
           </div>
 
-          {/* CTA */}
-         {/* Desktop CTA */}
-        <button className="nav-cta d-none d-sm-block" onClick={handleHireMe}>
-  hire me →
-</button>
+          {/* Desktop CTA */}
+          <button className="nav-cta d-none d-sm-block" onClick={handleHireMe}>
+            hire me →
+          </button>
         </div>
       </nav>
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="bg-white border-bottom px-3 pb-3 pt-2 d-sm-none">
+        <div className="mobile-menu d-sm-none">
           {navLinks.map((link) => (
             <a
               href="#"
               key={link}
-              className={`nav-link mobile-nav-link ${activeLink === link ? "active" : ""
-                }`}
-              onClick={(e) => {
-                e.preventDefault();
-                setActiveLink(link);
-                setMenuOpen(false);
-              }}
+              className={`nav-link mobile-nav-link ${activeLink === link ? "active" : ""}`}
+              onClick={(e) => handleNavClick(e, link)}
             >
               {link}
             </a>
           ))}
-
-          {/* Mobile CTA */}
           <a href="#" className="mobile-cta" onClick={handleHireMe}>
-              hire me →
+            hire me →
           </a>
-          
         </div>
       )}
     </>

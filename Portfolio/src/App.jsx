@@ -10,7 +10,9 @@ function App() {
   return (
     <>
       <MyNavbar />
-      <div id="about">
+      <div id="home" style={{ height: "10px" }} />  {/* ✅ small anchor for Home */}
+
+      <div id="about">          {/* ✅ directly after navbar, no gap */}
         <AboutSection projectsRef={projectsRef} />
       </div>
       <div id="projects" ref={projectsRef}>
