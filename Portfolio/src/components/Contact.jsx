@@ -12,7 +12,7 @@ export default function Contact() {
   const [sent, setSent] = useState(false);
 
   const socials = [
-    { label: "github", icon: "ti-brand-github", url: "https://github.com/VarshaBaskar2003/Crud_Project" },
+    { label: "github", icon: "ti-brand-github", url: "https://github.com/VarshaBaskar2003" },
     { label: "linkedin", icon: "ti-brand-linkedin", url: "https://www.linkedin.com/in/varsha-b-0228a531a/" },
   ];
 
