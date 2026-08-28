@@ -1,6 +1,18 @@
 import { useState } from "react";
 
 const projects = [
+   {
+        name: "RAG based QA Chatbot",
+        year: "2026",
+        desc: "An AI-powered chatbot that utilizes Retrieval-Augmented Generation (RAG) to provide accurate and context-aware answers to user queries.",
+        tags: ["React","FastAPI","SQLite","LangChain","OpenAI", "ChromaDB", "RAG", "Groq API"],
+        category: "Web App",
+        color: "#DFF5EA",
+        icon: "🤖",
+        featured: false,
+        liveUrl: "#",
+        githubUrl: "https://github.com/VarshaBaskar2003/rag-chat", 
+     },
     {
         name: "Smart Patient Management System",
         year: "2026",

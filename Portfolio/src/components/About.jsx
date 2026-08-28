@@ -7,7 +7,8 @@ export default function AboutSection({ projectsRef }) {
   const skills = [
     "Javascript", "React",  "Python", 
     "Django", "FastAPI", "Node.js",
-    "SQL", "Git", "Rest APIs", "Bootstrap"
+    "SQL", "Git", "Rest APIs", "Bootstrap",
+    "LLM", "RAG", "LangChain"
   ];
 
   const stats = [
